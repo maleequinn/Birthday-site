@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Happy Birthday ❤️</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Great+Vibes&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* INTRO SCREEN */
+
+      #introScreen {
+        position: fixed;
+        inset: 0;
+        background: #000;
+        z-index: 99999;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        padding: 20px;
+      }
+
+      .intro-box {
+        width: 100%;
+        max-width: 340px;
+
+        background: #111;
+        border-radius: 30px;
+
+        padding: 35px 25px;
+
+        text-align: center;
+
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      #questionText {
+        color: white;
+        font-size: 28px;
+        line-height: 1.4;
+        margin-bottom: 35px;
+      }
+
+      .intro-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .intro-buttons button {
+        border: none;
+        padding: 14px 24px;
+        border-radius: 50px;
+
+        font-size: 16px;
+        font-weight: 600;
+
+        cursor: pointer;
+      }
+
+      #yesBtn {
+        background: #ffb45e;
+        color: black;
+      }
+
+      #noBtn {
+        background: #222;
+        color: white;
+      }
+
+      /* CELEBRATION */
+
+      #celebrationScreen {
+        position: fixed;
+        inset: 0;
+
+        background: black;
+
+        z-index: 99998;
+
+        display: none;
+
+        justify-content: center;
+        align-items: center;
+
+        overflow: hidden;
+
+        opacity: 1;
+      }
+
+      .confetti-gif {
+        position: absolute;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        opacity: 0.9;
+
+        pointer-events: none;
+      }
+
+      .birthday-text {
+        position: relative;
+
+        z-index: 2;
+
+        font-size: 52px;
+
+        text-align: center;
+
+        color: #ffb45e;
+
+        animation: popIn 1s ease;
+      }
+
+      body {
+        background: #030303;
+        color: white;
+        font-family: "Poppins", sans-serif;
+        overflow-x: hidden;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 430px;
+        margin: auto;
+        padding: 18px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        padding: 18px;
+        margin-bottom: 22px;
+        backdrop-filter: blur(12px);
+        overflow: hidden;
+      }
+
+      /* HERO */
+      .hero {
+        position: relative;
+        height: 520px;
+        border-radius: 30px;
+        overflow: hidden;
+      }
+
+      .hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .overlay {
+        inset: 0;
+        position: absolute;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.1)
+        );
+        display: flex;
+        align-items: flex-end;
+        padding: 30px;
+      }
+
+      .hero-text h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 50px;
+        color: #ffb45e;
+        margin-bottom: 10px;
+      }
+
+      .hero-text p {
+        font-size: 15px;
+        opacity: 0.9;
+        align-content: center;
+      }
+
+      /* AUDIO CARD */
+      .audio-card {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 14px;
+        gap: 14px;
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+      }
+
+      .audio-card img {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        object-fit: cover;
+      }
+
+      .audio-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 0;
+      }
+
+      .audio-title {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      /* ✅ FIXED FULL WAVE */
+      .wave-container {
+        width: 100%;
+        height: 28px;
+        display: flex;
+        align-items: center;
+      }
+
+      .bars {
+        width: 300px;
+        height: 200px;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2px;
+      }
+
+      .bars div {
+        width: 3.5px;
+        height: 10px;
+        background: linear-gradient(180deg, #ffb45e, #ff7a00);
+        border-radius: 20px;
+      }
+
+      /* ONLY animate when playing */
+      .audio-card.playing .bars div {
+        animation: bounce 1s infinite ease-in-out;
+        opacity: 1;
+      }
+
+      .audio-card.playing .bars div:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .audio-card.playing .bars div:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+      .audio-card.playing .bars div:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .audio-card.playing .bars div:nth-child(4) {
+        animation-delay: 0.3s;
+      }
+      .audio-card.playing .bars div:nth-child(5) {
+        animation-delay: 0.15s;
+      }
+      .audio-card.playing .bars div:nth-child(6) {
+        animation-delay: 0.25s;
+      }
+      .audio-card.playing .bars div:nth-child(7) {
+        animation-delay: 0.1s;
+      }
+      .audio-card.playing .bars div:nth-child(8) {
+        animation-delay: 0.2s;
+      }
+      .audio-card.playing .bars div:nth-child(9) {
+        animation-delay: 0.35s;
+      }
+      .audio-card.playing .bars div:nth-child(10) {
+        animation-delay: 0.15s;
+      }
+      .audio-card.playing .bars div:nth-child(11) {
+        animation-delay: 0.25s;
+      }
+      .audio-card.playing .bars div:nth-child(12) {
+        animation-delay: 0.1s;
+      }
+      .audio-card.playing .bars div:nth-child(13) {
+        animation-delay: 0.2s;
+      }
+      .audio-card.playing .bars div:nth-child(14) {
+        animation-delay: 0.35s;
+      }
+      .audio-card.playing .bars div:nth-child(15) {
+        animation-delay: 0.15s;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: scaleY(0.4);
+        }
+        50% {
+          transform: scaleY(1.8);
+        }
+      }
+
+      .play-btn {
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ffb45e, #ff7a00);
+        color: #111;
+        font-size: 16px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      /* VIDEO TITLE */
+      .section-title {
+        color: #ffb45e;
+        margin-bottom: 16px;
+        font-size: 14px;
+        letter-spacing: 1px;
+      }
+
+      /* SWIPE CONTAINER */
+      .video-stack {
+        display: flex;
+        gap: 20px;
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        padding: 10px;
+
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: none;
+      }
+
+      .video-stack::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* ALL CARDS SAME SIZE */
+      .video-card {
+        flex: 0 0 auto;
+
+        width: 130px;
+        height: 220px;
+
+        border-radius: 24px;
+        overflow: hidden;
+
+        background: #000;
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+
+        scroll-snap-align: center;
+      }
+
+      /* VIDEO */
+      .video-card video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+
+        background: black;
+      }
+
+      /* SPOTIFY */
+      .spotify-section {
+        padding: 28px 20px;
+      }
+
+      .spotify-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .spotify-code {
+        width: 100%;
+        max-width: 260px;
+        border-radius: 18px;
+        margin-bottom: 20px;
+        object-fit: contain;
+      }
+
+      .spotify-text {
+        font-size: 14px;
+        line-height: 1.8;
+        opacity: 0.85;
+        margin-bottom: 20px;
+        color: white;
+        max-width: 280px;
+      }
+
+      .spotify-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        background: #1db954;
+        color: white;
+        text-decoration: none;
+
+        padding: 13px 26px;
+        border-radius: 40px;
+
+        font-size: 14px;
+        font-weight: 600;
+
+        transition: 0.3s ease;
+      }
+
+      .spotify-btn:hover {
+        transform: scale(1.03);
+      }
+
+      /* BIRTHDAY */
+      .birthday {
+        text-align: center;
+      }
+
+      .birthday h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 48px;
+        color: #ffb45e;
+        margin-bottom: 12px;
+      }
+
+      .birthday p {
+        font-size: 14px;
+        line-height: 1.8;
+        opacity: 0.85;
+        margin-bottom: 24px;
+        margin-top: 24px;
+      }
+
+      .reasons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .reason-box {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      /* TIMER */
+      .destruct {
+        text-align: center;
+      }
+
+      .destruct h2 {
+        color: #ff3d3d;
+        margin-bottom: 20px;
+        font-size: 17px;
+        letter-spacing: 1px;
+      }
+
+      .timer {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .time-box {
+        width: 90px;
+        background: #111;
+        border-radius: 20px;
+        padding: 18px 10px;
+        border: 1px solid rgba(255, 0, 0, 0.2);
+      }
+
+      .time-box h1 {
+        font-size: 40px;
+        color: #ff3d3d;
+        margin-bottom: 6px;
+      }
+
+      .time-box span {
+        font-size: 11px;
+        opacity: 0.7;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- INTRO SCREEN -->
+
+    <div id="introScreen">
+      <div class="intro-box">
+        <h1 id="questionText">Is today your birthday? 🎂</h1>
+
+        <div class="intro-buttons">
+          <button id="yesBtn">Yes ❤️</button>
+
+          <button id="noBtn">No 🙄</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CELEBRATION SCREEN -->
+
+    <div id="celebrationScreen">
+      <img src="confetti.gif" class="confetti-gif" />
+
+      <h1 class="birthday-text">HURRAY</h1>
+    </div>
+
+    <div class="container">
+      <!-- HERO -->
+      <div class="hero card">
+        <img src="your-image.jpg" />
+        <div class="overlay">
+          <div class="hero-text">
+            <h1>Hey You ❤️</h1>
+            <p>A lil something for you.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIO 1 -->
+      <div class="audio-card" id="card1">
+        <img src="audio1.jpg" />
+
+        <div class="audio-info">
+          <div class="audio-title">A message for you love</div>
+
+          <div class="wave-container">
+            <div class="bars">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="play-btn" onclick="toggleAudio('audio1', this, 'card1')">
+          ▶
+        </button>
+        <audio id="audio1" src="audio1.mp3"></audio>
+      </div>
+
+      <!-- VIDEOS -->
+
+      <div class="card">
+        <div class="section-title">MEMORIES FOR YOU</div>
+
+        <div class="video-stack">
+          <div class="video-card">
+            <video
+              src="video1.mp4"
+              poster="video1.jpg"
+              controls
+              preload="metadata"
+            ></video>
+          </div>
+
+          <div class="video-card">
+            <video
+              src="video2.mp4"
+              poster="video2.jpg"
+              controls
+              preload="metadata"
+            ></video>
+          </div>
+
+          <div class="video-card">
+            <video
+              src="video3.mp4"
+              poster="video3.jpg"
+              controls
+              preload="metadata"
+            ></video>
+          </div>
+        </div>
+      </div>
+
+      <!-- AUDIO 2 -->
+      <div class="audio-card" id="card2">
+        <img src="audio2.jpg" />
+
+        <div class="audio-info">
+          <div class="audio-title">Happy Birthday Love</div>
+
+          <div class="wave-container">
+            <div class="bars">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="play-btn" onclick="toggleAudio('audio2', this, 'card2')">
+          ▶
+        </button>
+        <audio id="audio2" src="audio2.mp3"></audio>
+      </div>
+
+      <!-- BIRTHDAY -->
+      <div class="card birthday">
+        <h1>Happy Birthday My Love ❤️</h1>
+        <p>
+          Today, I just want to celebrate you because you mean so much to me,
+          and even though I know things aren’t easy right now, I want you to
+          always remember that I’m here for you. I love you, I believe in you,
+          and I believe with all my heart that things will get better. Wishing
+          you a beautiful birthday, you deserve happiness.
+        </p>
+
+        <div class="reasons">
+          <div class="reason-box">You always make me laugh.</div>
+          <div class="reason-box">You genuinely care about me.</div>
+          <div class="reason-box">You make me better.</div>
+          <div class="reason-box">You're special to me.</div>
+        </div>
+
+        <p>And I'll always love you.</p>
+      </div>
+
+      <!-- SPOTIFY -->
+      <div class="card spotify-section">
+        <div class="spotify-content">
+          <!-- Spotify Code Image -->
+          <img src="spotify-code.png" class="spotify-code" alt="Spotify Code" />
+
+          <!-- Text -->
+          <p class="spotify-text">A playlist of songs that remind me of you.</p>
+
+          <!-- Button -->
+          <a
+            href="https://open.spotify.com/playlist/1bK9BN0tNPu1f65I06I1f1?si=cBW6-eRTQ5O1TEYVzMC07g&pi=wEVkBMdhSJWPS"
+            class="spotify-btn"
+            target="_blank"
+          >
+            Play on Spotify
+          </a>
+        </div>
+      </div>
+
+      <!-- TIMER -->
+      <div class="card destruct">
+        <h2>THIS MESSAGE WILL SELF DESTRUCT IN</h2>
+
+        <div class="timer">
+          <div class="time-box">
+            <h1 id="hours">24</h1>
+            <span>HOURS</span>
+          </div>
+
+          <div class="time-box">
+            <h1 id="minutes">00</h1>
+            <span>MINUTES</span>
+          </div>
+
+          <div class="time-box">
+            <h1 id="seconds">00</h1>
+            <span>SECONDS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleAudio(id, btn, cardId) {
+        const audio = document.getElementById(id);
+        const card = document.getElementById(cardId);
+
+        document.querySelectorAll("audio").forEach((a) => {
+          if (a.id !== id) a.pause();
+        });
+
+        document.querySelectorAll(".audio-card").forEach((c) => {
+          c.classList.remove("playing");
+        });
+
+        if (audio.paused) {
+          audio.play();
+          btn.innerHTML = "❚❚";
+          card.classList.add("playing");
+        } else {
+          audio.pause();
+          btn.innerHTML = "▶";
+          card.classList.remove("playing");
+        }
+
+        audio.onended = () => {
+          btn.innerHTML = "▶";
+          card.classList.remove("playing");
+        };
+      }
+
+      // SELF DESTRUCT TIMER
+
+      const STORAGE_KEY = "birthdaySiteExpiry";
+
+      // Check if expiry already exists
+      let expiryTime = localStorage.getItem(STORAGE_KEY);
+
+      // If not, create a new 24-hour expiry
+      if (!expiryTime) {
+        expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000;
+
+        localStorage.setItem(STORAGE_KEY, expiryTime);
+      }
+
+      // Countdown function
+
+      function updateCountdown() {
+        const now = new Date().getTime();
+
+        const distance = expiryTime - now;
+
+        // If timer finished
+
+        if (distance <= 0) {
+          clearInterval(timer);
+
+          document.body.innerHTML = "";
+
+          return;
+        }
+
+        // Time calculations
+
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+        );
+
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Update UI
+
+        document.getElementById("hours").innerText = String(hours).padStart(
+          2,
+          "0",
+        );
+
+        document.getElementById("minutes").innerText = String(minutes).padStart(
+          2,
+          "0",
+        );
+
+        document.getElementById("seconds").innerText = String(seconds).padStart(
+          2,
+          "0",
+        );
+      }
+
+      // Run immediately
+      updateCountdown();
+
+      // Update every second
+      const timer = setInterval(updateCountdown, 1000);
+
+      const noBtn = document.getElementById("noBtn");
+
+      const yesBtn = document.getElementById("yesBtn");
+
+      const questionText = document.getElementById("questionText");
+
+      const introScreen = document.getElementById("introScreen");
+
+      const celebrationScreen = document.getElementById("celebrationScreen");
+
+      let noCount = 0;
+
+      const noMessages = [
+        "Are you sure? 😭",
+
+        "I know it's your birthday 👀",
+
+        "Stop lying to me 😂",
+
+        "Birthday boy behavior 😭",
+
+        "Just click yes already ❤️",
+      ];
+
+      // NO BUTTON
+
+      noBtn.addEventListener("click", () => {
+        if (noCount < noMessages.length) {
+          questionText.innerText = noMessages[noCount];
+
+          noCount++;
+        }
+
+        // HIDE NO BUTTON EVENTUALLY
+
+        if (noCount >= noMessages.length) {
+          noBtn.style.display = "none";
+
+          yesBtn.style.width = "100%";
+        }
+      });
+
+      // YES BUTTON
+
+      yesBtn.addEventListener("click", () => {
+        // HIDE INTRO
+
+        introScreen.style.display = "none";
+
+        // SHOW CELEBRATION
+
+        celebrationScreen.style.display = "flex";
+
+        // FADE AWAY AFTER 4 SECONDS
+
+        setTimeout(() => {
+          celebrationScreen.style.transition = "opacity 1s ease";
+
+          celebrationScreen.style.opacity = "0";
+
+          setTimeout(() => {
+            celebrationScreen.style.display = "none";
+          }, 1000);
+        }, 4000);
+      });
+    </script>
+  </body>
+</html>
