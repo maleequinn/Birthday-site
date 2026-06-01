@@ -467,46 +467,6 @@
         line-height: 1.6;
       }
 
-      /* TIMER */
-      .destruct {
-        text-align: center;
-      }
-
-      .destruct h2 {
-        color: #ff3d3d;
-        margin-bottom: 20px;
-        font-size: 17px;
-        letter-spacing: 1px;
-      }
-
-      .timer {
-        display: flex;
-        justify-content: center;
-        gap: 14px;
-      }
-
-      .time-box {
-        width: 90px;
-        background: #111;
-        border-radius: 20px;
-        padding: 18px 10px;
-        border: 1px solid rgba(255, 0, 0, 0.2);
-      }
-
-      .time-box h1 {
-        font-size: 40px;
-        color: #ff3d3d;
-        margin-bottom: 6px;
-      }
-
-      .time-box span {
-        font-size: 11px;
-        opacity: 0.7;
-        letter-spacing: 1px;
-      }
-    </style>
-  </head>
-
   <body>
     <!-- INTRO SCREEN -->
 
@@ -685,28 +645,6 @@
           </a>
         </div>
       </div>
-
-      <!-- TIMER -->
-      <div class="card destruct">
-        <h2>THIS MESSAGE WILL SELF DESTRUCT IN</h2>
-
-        <div class="timer">
-          <div class="time-box">
-            <h1 id="hours">24</h1>
-            <span>HOURS</span>
-          </div>
-
-          <div class="time-box">
-            <h1 id="minutes">00</h1>
-            <span>MINUTES</span>
-          </div>
-
-          <div class="time-box">
-            <h1 id="seconds">00</h1>
-            <span>SECONDS</span>
-          </div>
-        </div>
-      </div>
     </div>
 
     <script>
@@ -736,65 +674,6 @@
           btn.innerHTML = "▶";
           card.classList.remove("playing");
         };
-      }
-
-      // SELF DESTRUCT TIMER
-
-      const STORAGE_KEY = "birthdaySiteExpiry";
-
-      // Check if expiry already exists
-      let expiryTime = localStorage.getItem(STORAGE_KEY);
-
-      // If not, create a new 24-hour expiry
-      if (!expiryTime) {
-        expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-
-        localStorage.setItem(STORAGE_KEY, expiryTime);
-      }
-
-      // Countdown function
-
-      function updateCountdown() {
-        const now = new Date().getTime();
-
-        const distance = expiryTime - now;
-
-        // If timer finished
-
-        if (distance <= 0) {
-          clearInterval(timer);
-
-          document.body.innerHTML = "";
-
-          return;
-        }
-
-        // Time calculations
-
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Update UI
-
-        document.getElementById("hours").innerText = String(hours).padStart(
-          2,
-          "0",
-        );
-
-        document.getElementById("minutes").innerText = String(minutes).padStart(
-          2,
-          "0",
-        );
-
-        document.getElementById("seconds").innerText = String(seconds).padStart(
-          2,
-          "0",
-        );
       }
 
       // Run immediately
