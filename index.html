@@ -473,9 +473,8 @@
       }
 
       .destruct h2 {
-        color: #ff3d3d;
-        margin-bottom: 20px;
-        font-size: 17px;
+        color: #ffb45e;
+        font-size: 15px;
         letter-spacing: 1px;
       }
 
@@ -686,10 +685,11 @@
         </div>
       </div>
 
-      <!-- TIMER -->
+      <!-- FOREVER MESSAGE -->
       <div class="card destruct">
         <h2>❤️ THIS MESSAGE IS YOURS FOREVER ❤️</h2>
       </div>
+    </div>
 
     <script>
       function toggleAudio(id, btn, cardId) {
@@ -719,71 +719,6 @@
           card.classList.remove("playing");
         };
       }
-
-      // SELF DESTRUCT TIMER
-
-      const STORAGE_KEY = "birthdaySiteExpiry";
-
-      // Check if expiry already exists
-      let expiryTime = localStorage.getItem(STORAGE_KEY);
-
-      // If not, create a new 24-hour expiry
-      if (!expiryTime) {
-        expiryTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-
-        localStorage.setItem(STORAGE_KEY, expiryTime);
-      }
-
-      // Countdown function
-
-      function updateCountdown() {
-        const now = new Date().getTime();
-
-        const distance = expiryTime - now;
-
-        // If timer finished
-
-        if (distance <= 0) {
-          clearInterval(timer);
-
-          document.body.innerHTML = "";
-
-          return;
-        }
-
-        // Time calculations
-
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
-        );
-
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Update UI
-
-        document.getElementById("hours").innerText = String(hours).padStart(
-          2,
-          "0",
-        );
-
-        document.getElementById("minutes").innerText = String(minutes).padStart(
-          2,
-          "0",
-        );
-
-        document.getElementById("seconds").innerText = String(seconds).padStart(
-          2,
-          "0",
-        );
-      }
-
-      // Run immediately
-      updateCountdown();
-
-      // Update every second
-      const timer = setInterval(updateCountdown, 1000);
 
       const noBtn = document.getElementById("noBtn");
 
